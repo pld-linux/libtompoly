@@ -1,0 +1,54 @@
+--- libtompoly-0.04/makefile.orig	2004-05-06 03:25:21.000000000 +0200
++++ libtompoly-0.04/makefile	2013-05-24 20:53:07.427647972 +0200
+@@ -1,10 +1,13 @@
+ #Makefile for GCC by Tom St Denis
+-CFLAGS += -I. -Os -Wall -W 
++CFLAGS += -I. -Wall -W 
++GCC=gcc
++CC=libtool --mode=compile --tag=CC $(GCC)
++CCLD=libtool --mode=link --tag=CC $(GCC)
+ 
+ VERSION=0.04
+ 
+ #default files to install
+-LIBNAME=libtompoly.a
++LIBNAME=libtompoly.la
+ HEADERS=tompoly.h
+ 
+ #LIBPATH-The directory for libtomcrypt to be installed to.
+@@ -15,7 +18,7 @@
+ INCPATH=/usr/include
+ DATAPATH=/usr/share/doc/libtompoly/pdf
+ 
+-default: libtompoly.a
++default: libtompoly.la
+ 
+ OBJECTS = pb_init.o pb_clear.o pb_init_size.o pb_grow.o pb_copy.o pb_clamp.o pb_init_copy.o \
+ pb_add.o pb_sub.o pb_mul.o pb_div.o pb_zero.o pb_lshd.o pb_rshd.o pb_exch.o pb_mod.o \
+@@ -23,14 +26,19 @@
+ pb_cmp.o pb_shrink.o pb_exteuclid.o pb_monic.o pb_exptmod.o pb_isirreduc.o pb_rawsize.o \
+ pb_toraw.o pb_readraw.o
+ 
+-libtompoly.a: $(OBJECTS)
+-	ar $(ARFLAGS) libtompoly.a $(OBJECTS)
++LTOBJS=$(OBJECTS:.o=.lo)
+ 
+-install: libtompoly.a
+-	install -d -g root -o root $(DESTDIR)$(LIBPATH)
+-	install -d -g root -o root $(DESTDIR)$(INCPATH)
+-	install -g root -o root $(LIBNAME) $(DESTDIR)$(LIBPATH)
+-	install -g root -o root $(HEADERS) $(DESTDIR)$(INCPATH)
++%.lo: %.c
++	$(CC) $(CFLAGS) -c -o $@ $<
++
++libtompoly.la: $(LTOBJS)
++	$(CCLD) $(LDFLAGS) $(CFLAGS) -o $@ $* -rpath $(LIBPATH)
++
++install: libtompoly.la
++	install -d $(DESTDIR)$(LIBPATH)
++	install -d $(DESTDIR)$(INCPATH)
++	libtool --mode=install install $(LIBNAME) $(DESTDIR)$(LIBPATH)
++	install $(HEADERS) $(DESTDIR)$(INCPATH)
+ 
+ demo: demo/demo.o libtompoly.a
+ 	gcc demo/demo.o libtompoly.a -ltommath -o pbdemo
