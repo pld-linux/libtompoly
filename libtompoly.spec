@@ -5,10 +5,11 @@ Version:	0.04
 Release:	1
 License:	Public Domain
 Group:		Libraries
-Source0:	http://libtom.org/files/ltp-%{version}.tar.bz2
+#Source0Download: https://github.com/libtom/libtompoly/releases
+Source0:	https://github.com/libtom/libtompoly/releases/download/%{version}/ltp-%{version}.tar.bz2
 # Source0-md5:	2e7883f758773223df656bd53fb4e4e0
 Patch0:		%{name}-make.patch
-URL:		http://libtom.org/?page=features&whatfile=ltp
+URL:		http://www.libtom.org/LibTomPoly/
 BuildRequires:	libtommath-devel
 BuildRequires:	libtool >= 2:1.5
 BuildRequires:	sed >= 4.0
