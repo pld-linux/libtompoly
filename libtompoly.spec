@@ -9,7 +9,7 @@ Group:		Libraries
 Source0:	https://github.com/libtom/libtompoly/releases/download/%{version}/ltp-%{version}.tar.bz2
 # Source0-md5:	2e7883f758773223df656bd53fb4e4e0
 Patch0:		%{name}-make.patch
-URL:		http://www.libtom.org/LibTomPoly/
+URL:		http://www.libtom.net/LibTomPoly/
 BuildRequires:	libtommath-devel
 BuildRequires:	libtool >= 2:1.5
 BuildRequires:	sed >= 4.0
